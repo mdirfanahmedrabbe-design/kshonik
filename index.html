@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F4D3F">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>ক্ষণিক | নামাজের সময়সূচি ও ফোকাস লক</title>
+<style>
+:root{--bg:#E8EFE6;--card:#F7FAF5;--ink:#16302A;--mute:#5B7068;--green:#1F4D3F;--gold:#B8860B;--line:#C9D8CC;--red:#9B2C2C}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1F1B;--card:#172B25;--ink:#E6EFE8;--mute:#93A89E;--green:#6FBF9F;--gold:#E0B24A;--line:#27413A;--red:#E58A8A}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;line-height:1.6;padding:env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px);max-width:480px;margin:0 auto}
+h1{font-size:1.25rem;font-weight:700;color:var(--green);padding-top:14px}
+h2{font-size:1rem;margin:22px 0 8px}
+.top{display:flex;justify-content:space-between;align-items:baseline}
+#clock{font-size:1.1rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.next{background:var(--green);color:#F7FAF5;border-radius:18px;padding:20px;margin-top:14px}
+@media (prefers-color-scheme:dark){.next{color:#0F1F1B}}
+.next small{opacity:.8}
+.next .name{font-size:1.6rem;font-weight:700}
+#count{font-size:2.6rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.list{background:var(--card);border-radius:14px;border:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.row.on{background:rgba(184,134,11,.15);font-weight:700}
+.row span:last-child{font-variant-numeric:tabular-nums}
+button,.btn{font:inherit;border:0;border-radius:12px;padding:12px 16px;background:var(--green);color:#F7FAF5;cursor:pointer;display:inline-block}
+@media (prefers-color-scheme:dark){button,.btn{color:#0F1F1B}}
+button.alt{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+button.danger{background:var(--red);color:#fff}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.panel p{color:var(--mute);font-size:.92rem}
+label.sw{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+select,input[type=time]{font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+ul.rules{padding-left:20px;color:var(--mute);font-size:.92rem}
+#lock{position:fixed;inset:0;background:#0B1713;color:#E6EFE8;z-index:99;display:none;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top) + 24px) 20px calc(env(safe-area-inset-bottom) + 20px);text-align:center;overflow:auto}
+#lock.show{display:flex}
+#lock h2{font-size:1.4rem;margin:6px 0}
+#unl{font-size:3rem;font-weight:700;font-variant-numeric:tabular-nums;color:#E0B24A}
+#num{font-size:1.8rem;min-height:2.4rem;letter-spacing:2px;margin:10px 0}
+.pad{display:grid;grid-template-columns:repeat(3,72px);gap:10px;margin:6px 0}
+.pad button{background:#1E3A32;color:#E6EFE8;font-size:1.3rem;padding:14px 0;border-radius:36px}
+.call{background:#2F9E6E!important;color:#fff!important;text-decoration:none;padding:12px 28px;border-radius:30px;margin-top:6px}
+.edit{display:none}.edit.show{display:block}
+.edit div{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="top"><h1>ক্ষণিক</h1><div id="clock">--:--:--</div></div>
+
+<button id="installBtn" style="display:none;width:100%;margin-top:12px">📲 অ্যাপটি ইনস্টল করুন</button>
+<div class="next">
+  <small>পরবর্তী ওয়াক্ত</small>
+  <div class="name" id="nname">—</div>
+  <div id="count">--:--:--</div>
+</div>
+
+<h2>আজকের ওয়াক্ত</h2>
+<div class="list" id="list"></div>
+<div class="btns">
+  <button class="alt" id="editBtn">সময় এডিট</button>
+  <button class="alt" id="resetBtn">ডিফল্ট সময়</button>
+</div>
+<div class="panel edit" id="edit">
+  <p>আপনার এলাকার সময় দিন, তারপর সংরক্ষণ করুন।</p>
+  <div id="editRows"></div>
+  <button id="saveBtn">সংরক্ষণ করুন</button>
+</div>
+
+<h2>আজানের অডিও</h2>
+<div class="panel">
+  <p id="audioName">ডিফল্ট আজান টোন</p>
+  <div class="btns">
+    <label class="btn alt" style="border:1.5px solid var(--green);background:transparent;color:var(--green)">ফাইল থেকে অডিও নিন<input type="file" id="file" accept="audio/*" hidden></label>
+    <button class="alt" id="playBtn">বাজিয়ে শুনুন</button>
+    <button class="alt" id="stopBtn">থামান</button>
+  </div>
+</div>
+
+<h2>সেটিংস</h2>
+<div class="panel">
+  <label class="sw">অটো লক <input type="checkbox" id="autoLock" checked></label>
+  <label class="sw">লক থাকার সময়
+    <select id="dur"><option value="15">১৫ মিনিট</option><option value="30">৩০ মিনিট</option><option value="45">৪৫ মিনিট</option></select>
+  </label>
+  <div class="btns"><button id="testLock">লক স্ক্রিন টেস্ট করুন</button></div>
+</div>
+
+<h2>লক মোডের নিয়ম</h2>
+<ul class="rules">
+  <li>ওয়াক্ত শুরু হলে আজান বাজবে এবং অ্যাপ ফুলস্ক্রিন লক হবে।</li>
+  <li>লক অবস্থায় যেকোনো নম্বরে কল করা যাবে।</li>
+  <li>নির্ধারিত সময় পর নিজে থেকে আনলক হবে।</li>
+  <li>আজান ও লক কাজ করতে অ্যাপটি ব্রাউজারে খোলা রাখতে হবে।</li>
+</ul>
+
+<div id="lock">
+  <h2>নামাজের ওয়াক্ত চলছে</h2>
+  <p style="opacity:.8">আনলক হতে বাকি</p>
+  <div id="unl">00:00</div>
+  <div id="num"></div>
+  <div class="pad" id="pad"></div>
+  <a class="btn call" id="callBtn" href="tel:">কল দিন</a>
+  <button class="danger" id="emerg" style="margin-top:16px">জরুরি আনলক</button>
+</div>
+
+<script>
+const NAMES=["ফজর","জোহর","আসর","মাগরিব","এশা"];
+const DEF=["05:00","12:15","16:30","18:05","19:30"];
+const bn=s=>String(s).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+const $=id=>document.getElementById(id);
+const store={
+  get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let times=store.get("times",DEF.slice());
+let duration=store.get("dur",30);
+let auto=store.get("auto",true);
+let audioData=store.get("audio",null);
+let fired=store.get("fired",{});
+let lockEnd=0, audioEl=null, actx=null, melodyTimer=null;
+
+function pad(n){return String(n).padStart(2,"0")}
+function fmt12(t){const [h,m]=t.split(":").map(Number);return bn(pad(((h+11)%12)+1)+":"+pad(m))+(h>=12?" PM":" AM")}
+function secOf(t){const [h,m]=t.split(":").map(Number);return h*3600+m*60}
+function hms(s){s=Math.max(0,s);return bn(pad(Math.floor(s/3600))+":"+pad(Math.floor(s%3600/60))+":"+pad(s%60))}
+function ms(s){s=Math.max(0,s);return bn(pad(Math.floor(s/60))+":"+pad(s%60))}
+function todayKey(){const d=new Date();return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()}
+
+// ---- Audio ----
+function playDefault(){
+  stopAudio();
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const seq=[392,440,494,523,494,440,392,330,392,440,494,587,523,494,440,392];
+    const t0=actx.currentTime+0.05;
+    seq.forEach((f,i)=>{
+      const o=actx.createOscillator(),g=actx.createGain();
+      o.type="sine";o.frequency.value=f;
+      g.gain.setValueAtTime(0,t0+i*.6);
+      g.gain.linearRampToValueAtTime(.35,t0+i*.6+.05);
+      g.gain.exponentialRampToValueAtTime(.001,t0+i*.6+.58);
+      o.connect(g);g.connect(actx.destination);
+      o.start(t0+i*.6);o.stop(t0+i*.6+.6);
+    });
+  }catch(e){}
+}
+function playAudio(){
+  if(audioData){stopAudio();audioEl=new Audio(audioData);audioEl.play().catch(()=>{})}
+  else playDefault();
+}
+function stopAudio(){
+  if(audioEl){audioEl.pause();audioEl=null}
+  if(actx){try{actx.close()}catch(e){}actx=null}
+}
+$("audioName").textContent=audioData?store.get("audioName","কাস্টম অডিও"):"ডিফল্ট আজান টোন";
+$("file").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{audioData=r.result;store.set("audio",audioData);store.set("audioName",f.name);$("audioName").textContent=f.name;
+    try{if(localStorage.getItem("audio")===null)alert("ফাইলটি বড়, শুধু এই সেশনে ব্যবহার হবে।")}catch(e){}};
+  r.readAsDataURL(f);
+};
+$("playBtn").onclick=playAudio;
+$("stopBtn").onclick=stopAudio;
+
+// ---- Lock ----
+let wl=null;
+async function startLock(mins){
+  lockEnd=Date.now()+mins*60000;
+  $("lock").classList.add("show");
+  try{await document.documentElement.requestFullscreen()}catch(e){}
+  try{wl=await navigator.wakeLock.request("screen")}catch(e){}
+}
+function endLock(){
+  lockEnd=0;stopAudio();
+  $("lock").classList.remove("show");
+  $("num").textContent="";
+  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
+  if(wl){wl.release().catch(()=>{});wl=null}
+}
+const pad_=$("pad");
+["১","২","৩","৪","৫","৬","৭","৮","৯","*","০","#"].forEach(k=>{
+  const b=document.createElement("button");b.textContent=k;
+  b.onclick=()=>{$("num").textContent+=k;upd()};pad_.appendChild(b)
+});
+const dels=document.createElement("button");dels.textContent="মুছুন";dels.style.fontSize=".9rem";
+dels.onclick=()=>{$("num").textContent=$("num").textContent.slice(0,-1);upd()};pad_.appendChild(dels);
+function upd(){
+  const map={"১":1,"২":2,"৩":3,"৪":4,"৫":5,"৬":6,"৭":7,"৮":8,"৯":9,"০":0};
+  const n=[...$("num").textContent].map(c=>map[c]!==undefined?map[c]:encodeURIComponent(c)).join("");
+  $("callBtn").href="tel:"+n;
+}
+$("emerg").onclick=()=>{if(confirm("জরুরি প্রয়োজনে লক খুলবেন?"))endLock()};
+$("testLock").onclick=()=>{playAudio();startLock(1)};
+
+// ---- UI ----
+function renderList(nextIdx){
+  $("list").innerHTML=NAMES.map((n,i)=>`<div class="row${i===nextIdx?" on":""}"><span>${n}</span><span>${fmt12(times[i])}</span></div>`).join("");
+}
+function buildEdit(){
+  $("editRows").innerHTML=NAMES.map((n,i)=>`<div><span>${n}</span><input type="time" id="t${i}" value="${times[i]}"></div>`).join("");
+}
+$("editBtn").onclick=()=>{buildEdit();$("edit").classList.toggle("show")};
+$("saveBtn").onclick=()=>{
+  times=NAMES.map((_,i)=>$("t"+i).value||DEF[i]);store.set("times",times);
+  $("edit").classList.remove("show");tick(true);
+};
+$("resetBtn").onclick=()=>{times=DEF.slice();store.set("times",times);buildEdit();tick(true)};
+$("dur").value=String(duration);
+$("dur").onchange=e=>{duration=+e.target.value;store.set("dur",duration)};
+$("autoLock").checked=auto;
+$("autoLock").onchange=e=>{auto=e.target.checked;store.set("auto",auto)};
+
+if("Notification" in window&&Notification.permission==="default"){
+  document.addEventListener("click",()=>Notification.requestPermission(),{once:true});
+}
+
+let lastIdx=-2;
+function tick(force){
+  const d=new Date();
+  const now=d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
+  $("clock").textContent=hms(now);
+
+  let idx=times.findIndex(t=>secOf(t)>now),diff;
+  if(idx===-1){idx=0;diff=secOf(times[0])+86400-now}else diff=secOf(times[idx])-now;
+  $("nname").textContent=NAMES[idx];
+  $("count").textContent=hms(diff);
+  if(idx!==lastIdx||force){renderList(idx);lastIdx=idx}
+
+  // trigger
+  const k=todayKey();
+  if(fired.day!==k)fired={day:k};
+  times.forEach((t,i)=>{
+    const s=secOf(t);
+    if(now>=s&&now<s+5&&!fired[i]){
+      fired[i]=true;store.set("fired",fired);
+      playAudio();
+      try{if(Notification.permission==="granted")new Notification("ক্ষণিক",{body:NAMES[i]+" ওয়াক্ত শুরু হয়েছে"})}catch(e){}
+      if(auto)startLock(duration);
+    }
+  });
+
+  if(lockEnd){
+    const left=Math.ceil((lockEnd-Date.now())/1000);
+    $("unl").textContent=ms(left);
+    if(left<=0)endLock();
+  }
+}
+let dip=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e;$("installBtn").style.display="block"});
+$("installBtn").onclick=async()=>{if(!dip)return;dip.prompt();await dip.userChoice;dip=null;$("installBtn").style.display="none"};
+window.addEventListener("appinstalled",()=>{$("installBtn").style.display="none"});
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+renderList(0);tick(true);
+setInterval(tick,1000);
+</script>
+</body>
+</html>
