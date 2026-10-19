@@ -1,10 +1,40 @@
-# ক্ষণিকা (Kshonikk) - Android অ্যাপ
-
-নামাজের সময়সূচি, আজান ও অটো ফোন লক। সম্পূর্ণ অফলাইন।
-
-## APK বানানোর নিয়ম (GitHub দিয়ে)
-1. GitHub-এ নতুন repository খুলুন।
-2. এই ফোল্ডারের **সব ফাইল** (লুকানো `.github` ফোল্ডারসহ) repository-তে আপলোড করুন।
-3. repository-র **Actions** ট্যাবে গিয়ে "Build APK" শেষ হওয়া পর্যন্ত অপেক্ষা করুন (৪-৮ মিনিট)।
-4. শেষ হলে ওই run খুলে নিচে **Artifacts > kshonik-apk** ডাউনলোড করুন। ভেতরে app-debug.apk পাবেন।
-5. ফোনে APK ইনস্টল করে অ্যাপ খুলুন এবং "আরও" ট্যাবের সেটআপ অংশের সব অনুমতি দিন।
+const CACHE = "kshonik-gh-v4";
+const FILES = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
+self.addEventListener("install", e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+});
+self.addEventListener("activate", e => {
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+});
+self.addEventListener("fetch", e => {
+  if (e.request.method !== "GET") return;
+  e.respondWith(
+    caches.open(CACHE).then(cache =>
+      cache.match(e.request, {ignoreSearch: true}).then(cached => {
+        const net = fetch(e.request).then(res => { if (res && res.ok) cache.put(e.request, res.clone()); return res; }).catch(() => cached || cache.match("./index.html"));
+        return cached || net;
+      })
+    )
+  );
+});
+{
+  "id": "./",
+  "name": "ক্ষণিক",
+  "short_name": "ক্ষণিক",
+  "description": "নামাজের সময়সূচি, আজান ও ফোকাস লক অ্যাপ",
+  "lang": "bn",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1F6B52",
+  "categories": ["lifestyle", "utilities"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
