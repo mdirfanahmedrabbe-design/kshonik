@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1F4D3F">
+<meta name="theme-color" content="#FFFFFF">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>ক্ষণিক | নামাজের সময়সূচি ও ফোকাস লক</title>
 <style>
-:root{--bg:#E8EFE6;--card:#F7FAF5;--ink:#16302A;--mute:#5B7068;--green:#1F4D3F;--gold:#B8860B;--line:#C9D8CC;--red:#9B2C2C}
-@media (prefers-color-scheme:dark){:root{--bg:#0F1F1B;--card:#172B25;--ink:#E6EFE8;--mute:#93A89E;--green:#6FBF9F;--gold:#E0B24A;--line:#27413A;--red:#E58A8A}}
+:root{--bg:#FFFFFF;--card:#F5F8F5;--ink:#16302A;--mute:#5B7068;--green:#1F6B52;--gold:#B8860B;--line:#DCE6DE;--red:#B03A3A}
+
 *{box-sizing:border-box;margin:0}
-body{background:var(--bg);color:var(--ink);font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;line-height:1.6;padding:env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px);max-width:480px;margin:0 auto}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;line-height:1.6;padding:env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 90px);max-width:480px;margin:0 auto}
 h1{font-size:1.25rem;font-weight:700;color:var(--green);padding-top:14px}
 h2{font-size:1rem;margin:22px 0 8px}
 .top{display:flex;justify-content:space-between;align-items:baseline}
 #clock{font-size:1.1rem;color:var(--mute);font-variant-numeric:tabular-nums}
 .next{background:var(--green);color:#F7FAF5;border-radius:18px;padding:20px;margin-top:14px}
-@media (prefers-color-scheme:dark){.next{color:#0F1F1B}}
+
 .next small{opacity:.8}
 .next .name{font-size:1.6rem;font-weight:700}
 #count{font-size:2.6rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
@@ -28,7 +28,7 @@ h2{font-size:1rem;margin:22px 0 8px}
 .row.on{background:rgba(184,134,11,.15);font-weight:700}
 .row span:last-child{font-variant-numeric:tabular-nums}
 button,.btn{font:inherit;border:0;border-radius:12px;padding:12px 16px;background:var(--green);color:#F7FAF5;cursor:pointer;display:inline-block}
-@media (prefers-color-scheme:dark){button,.btn{color:#0F1F1B}}
+
 button.alt{background:transparent;color:var(--green);border:1.5px solid var(--green)}
 button.danger{background:var(--red);color:#fff}
 .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
@@ -47,66 +47,232 @@ ul.rules{padding-left:20px;color:var(--mute);font-size:.92rem}
 .call{background:#2F9E6E!important;color:#fff!important;text-decoration:none;padding:12px 28px;border-radius:30px;margin-top:6px}
 .edit{display:none}.edit.show{display:block}
 .edit div{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip{background:transparent;color:var(--green);border:1.5px solid var(--green);padding:8px 14px;border-radius:20px}
+.chip.on{background:var(--green);color:#F7FAF5}
+
+input[type=number],input[type=text]{font:inherit;width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);margin:6px 0}
+.num{font-size:1.3rem;font-weight:700;letter-spacing:1px;color:var(--gold)}
+.note{font-size:.85rem;color:var(--mute)}
+#shot{max-width:100%;max-height:220px;border-radius:10px;margin-top:8px;display:none}
+.ok{color:var(--green);font-weight:700}
+#welcome{position:fixed;inset:0;z-index:150;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(circle at 50% 18%,#2C6B58 0%,#173A31 55%,#0B1713 100%);color:#F3EAD3;opacity:0;transition:opacity .6s}
+#welcome.show{display:flex}#welcome.in{opacity:1}
+#welcome .moon{font-size:3.2rem;margin-bottom:6px}
+#welcome .ar{font-family:"Amiri","Noto Naskh Arabic","Traditional Arabic",serif;font-size:2rem;line-height:1.8;color:#E0B24A}
+#welcome h1{color:#F3EAD3;font-size:1.7rem;padding:6px 0}
+#welcome p{max-width:320px;opacity:.9;margin:6px 0 22px}
+#welcome button{background:#E0B24A;color:#16302A;font-weight:700;padding:14px 34px;border-radius:30px;font-size:1.05rem}
+#greet{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 12px);transform:translate(-50%,-300%);transition:transform .5s;background:var(--green);color:#F7FAF5;padding:10px 18px;border-radius:24px;z-index:140;font-size:.95rem;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+
+#greet.show{transform:translate(-50%,0)}
+.tab{display:none}.tab.on{display:block}
+#nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:60;max-width:480px;margin:0 auto}
+#nav button{flex:1;background:none;color:var(--mute);font-size:.68rem;padding:8px 0;border-radius:0;line-height:1.3}
+#nav button span{display:block;font-size:1.25rem}
+#nav button.on{color:var(--green);font-weight:700}
+.big{font-size:2rem;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two .panel{text-align:center}
+.arab{font-family:"Amiri","Noto Naskh Arabic","Traditional Arabic",serif;font-size:1.7rem;line-height:2.1;text-align:center;direction:rtl;color:var(--ink);margin:6px 0}
+.tag{display:inline-block;background:var(--green);color:#fff;border-radius:12px;padding:2px 12px;font-size:.8rem}
+#tas{width:210px;height:210px;border-radius:50%;margin:18px auto;display:flex;align-items:center;justify-content:center;font-size:3.4rem;font-weight:700;color:#fff;background:radial-gradient(circle at 35% 30%,#2E8B6C,#1F6B52);box-shadow:0 8px 24px rgba(31,107,82,.35);user-select:none;-webkit-user-select:none;touch-action:manipulation}
+#tas:active{transform:scale(.97)}
+#compass{display:block;margin:10px auto;width:280px;max-width:90%}
+#welcome{background:linear-gradient(180deg,#FFFFFF,#E4F1E8)!important;color:#16302A!important}
+#welcome h1{color:#1F6B52!important}#welcome .ar{color:#B8860B!important}
+#welcome button{background:#1F6B52!important;color:#fff!important}
+
+@media(prefers-color-scheme:dark){:root{--bg:#0F1A16;--card:#16241F;--ink:#E4EEE7;--mute:#9DB3A8;--green:#2E8F6E;--line:#2A3D35}}
+#hijri{color:var(--mute);font-size:.85rem;text-align:right}
+.ck{min-width:38px}
+.sw input[type=number]{width:70px}
+textarea{width:100%;font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-height:70px}
+input[type=password]{font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:110px;letter-spacing:6px;text-align:center}
 </style>
 </head>
 <body>
 <div class="top"><h1>ক্ষণিক</h1><div id="clock">--:--:--</div></div>
+<div id="hijri"></div>
 
-<button id="installBtn" style="display:none;width:100%;margin-top:12px">📲 অ্যাপটি ইনস্টল করুন</button>
+<div class="tab on" id="tab-home">
 <div class="next">
   <small>পরবর্তী ওয়াক্ত</small>
   <div class="name" id="nname">—</div>
   <div id="count">--:--:--</div>
+  <div id="waqtEnd" style="opacity:.85;font-size:.9rem;margin-top:4px"></div>
 </div>
 
 <h2>আজকের ওয়াক্ত</h2>
 <div class="list" id="list"></div>
+<p class="note" id="locInfo" style="margin-top:8px">সময় ডিফল্ট (আনুমানিক)। সঠিক সময়ের জন্য GPS ব্যবহার করুন।</p>
 <div class="btns">
+  <button id="gpsBtn">📍 GPS দিয়ে সময় নিন</button>
   <button class="alt" id="editBtn">সময় এডিট</button>
   <button class="alt" id="resetBtn">ডিফল্ট সময়</button>
+  <select id="dist"><option value="">📍 জেলা বেছে নিন (অফলাইন)</option></select>
 </div>
+<h2>সূর্যোদয় ও নিষিদ্ধ সময়</h2>
+<div class="panel" id="sunPanel"></div>
 <div class="panel edit" id="edit">
   <p>আপনার এলাকার সময় দিন, তারপর সংরক্ষণ করুন।</p>
   <div id="editRows"></div>
   <button id="saveBtn">সংরক্ষণ করুন</button>
 </div>
 
+</div>
+<div class="tab" id="tab-roza">
+  <h2>🌙 রোজার সময়</h2>
+  <div class="next"><small id="rozaLbl">পরবর্তী</small><div id="rozaCount">--:--:--</div></div>
+  <div class="two" style="margin-top:12px">
+    <div class="panel"><p>সেহরি শেষ</p><div class="big" id="sehri">--</div></div>
+    <div class="panel"><p>ইফতার</p><div class="big" id="iftar">--</div></div>
+  </div>
+  <p class="note" style="margin-top:10px">সেহরির শেষ সময় ফজরের শুরুর সাথে ধরা হয়েছে, সতর্কতার জন্য কয়েক মিনিট আগে শেষ করুন। ইফতার হলো মাগরিবের সময়। সময় GPS বা হাতে দেওয়া ওয়াক্ত থেকে আসে, স্থানীয় ক্যালেন্ডারের সাথে মিলিয়ে নিন।</p>
+</div>
+<div class="tab" id="tab-dua">
+  <h2>📖 আজকের দোয়া ও আয়াত</h2>
+  <div class="panel">
+    <span class="tag" id="duaKind"></span>
+    <div class="arab" id="duaAr"></div>
+    <p id="duaBn" style="color:var(--ink)"></p>
+    <p class="note" id="duaSrc" style="margin-top:6px"></p>
+    <div class="btns"><button class="alt" id="duaPrev">← আগের</button><button class="alt" id="duaNext">পরের →</button><button class="alt" id="duaCopy">কপি</button></div>
+  </div>
+</div>
+<div class="tab" id="tab-tasbih">
+  <h2>📿 তাসবিহ কাউন্টার</h2>
+  <div class="chips" id="dhikrChips"></div>
+  <div id="tas">০</div>
+  <p style="text-align:center" id="tasInfo" class="note"></p>
+  <div class="btns" style="justify-content:center"><select id="tasTarget"><option value="33">লক্ষ্য ৩৩</option><option value="99">লক্ষ্য ৯৯</option><option value="100">লক্ষ্য ১০০</option><option value="0">সীমাহীন</option></select><button class="alt" id="tasReset">রিসেট</button></div>
+</div>
+<div class="tab" id="tab-qibla">
+  <h2>🧭 কিবলা কম্পাস</h2>
+  <svg id="compass" viewBox="-110 -110 220 220">
+    <circle r="104" fill="#F5F8F5" stroke="#1F6B52" stroke-width="3"/>
+    <g id="rose">
+      <text y="-82" text-anchor="middle" font-size="16" fill="#B03A3A" font-weight="700">উ</text>
+      <text x="86" y="6" text-anchor="middle" font-size="14" fill="#5B7068">পূ</text>
+      <text y="96" text-anchor="middle" font-size="14" fill="#5B7068">দ</text>
+      <text x="-86" y="6" text-anchor="middle" font-size="14" fill="#5B7068">প</text>
+      <g id="qArrow"><line y1="0" y2="-70" stroke="#1F6B52" stroke-width="5" stroke-linecap="round"/><polygon points="0,-88 -9,-68 9,-68" fill="#1F6B52"/><text y="-92" text-anchor="middle" font-size="16">🕋</text></g>
+    </g>
+    <circle r="6" fill="#B8860B"/>
+  </svg>
+  <p id="qInfo" style="text-align:center;font-weight:700"></p>
+  <div class="btns" style="justify-content:center"><button id="qStart">কম্পাস চালু করুন</button></div>
+  <p class="note" style="margin-top:10px;text-align:center">ফোন সমান করে ধরুন। সঠিক না হলে ফোন ৮-এর মতো ঘুরিয়ে ক্যালিব্রেট করুন এবং চুম্বক বা ধাতু থেকে দূরে রাখুন। 🕋 উপরে এলে আপনি কিবলামুখী।</p>
+</div>
+<div class="tab" id="tab-more">
+<h2>⚙️ সেটআপ (প্রথমে এগুলো চালু করুন)</h2>
+<div class="panel" id="setup">
+  <p>অটো লক ঠিকমতো চলতে নিচের সব অনুমতি লাগবে। Infinix ফোনে ব্যাটারি ও অটো-স্টার্ট অবশ্যই চালু করুন, নইলে ফোন অ্যাপ বন্ধ করে দিতে পারে।</p>
+  <div id="setupRows"></div>
+</div>
+
+<h2>🔐 লকের পাসওয়ার্ড (৪ সংখ্যা)</h2>
+<div class="panel">
+  <p id="pinInfo"></p>
+  <div class="btns"><input type="password" id="pin" maxlength="4" inputmode="numeric" placeholder="••••"><button id="pinSet">সেট করুন</button></div>
+  <p class="note" style="margin-top:8px">৩ বার ভুল দিলে ৫ মিনিট অপেক্ষা করতে হবে। পাসওয়ার্ড ভুলে গেলে লকের সময় শেষ হলে নিজে খুলবে।</p>
+</div>
+
 <h2>আজানের অডিও</h2>
 <div class="panel">
-  <p id="audioName">ডিফল্ট আজান টোন</p>
+  <p id="azanName">ডিফল্ট আজান টোন</p>
   <div class="btns">
-    <label class="btn alt" style="border:1.5px solid var(--green);background:transparent;color:var(--green)">ফাইল থেকে অডিও নিন<input type="file" id="file" accept="audio/*" hidden></label>
-    <button class="alt" id="playBtn">বাজিয়ে শুনুন</button>
+    <button class="alt" data-a="pick" data-k="azan">আজান ফাইল নিন</button>
+    <button class="alt" data-a="play" data-k="azan">শুনুন</button>
+    <button class="alt" data-a="clr" data-k="azan">মুছুন</button>
+  </div>
+  <p id="fajrName" style="margin-top:12px">ফজরের আলাদা আজান: নেই</p>
+  <div class="btns">
+    <button class="alt" data-a="pick" data-k="fajr">ফজরের আজান ফাইল নিন</button>
+    <button class="alt" data-a="play" data-k="fajr">শুনুন</button>
+    <button class="alt" data-a="clr" data-k="fajr">মুছুন</button>
     <button class="alt" id="stopBtn">থামান</button>
   </div>
+  <label class="sw" style="margin-top:8px">ফজরে আলাদা আজান বাজাও <input type="checkbox" id="fajrAzan"></label>
+  <p class="note">আজান ফোনের অ্যালার্ম ভলিউমে বাজে এবং সাইলেন্ট বা Do Not Disturb মোডেও বাজবে।</p>
 </div>
 
 <h2>সেটিংস</h2>
 <div class="panel">
   <label class="sw">অটো লক <input type="checkbox" id="autoLock" checked></label>
+  <label class="sw">লকের ১ মিনিট আগে নোটিফিকেশন <input type="checkbox" id="warn"></label>
   <label class="sw">লক থাকার সময়
     <select id="dur"><option value="15">১৫ মিনিট</option><option value="30">৩০ মিনিট</option><option value="45">৪৫ মিনিট</option></select>
   </label>
-  <div class="btns"><button id="testLock">লক স্ক্রিন টেস্ট করুন</button></div>
+  <label class="sw">হিসাব পদ্ধতি
+    <select id="method"><option value="karachi">করাচি (বাংলাদেশে প্রচলিত)</option><option value="mwl">মুসলিম ওয়ার্ল্ড লীগ</option><option value="isna">ISNA</option><option value="egypt">মিসর</option><option value="umm">উম্মুল কুরা</option></select>
+  </label>
+  <label class="sw">আসরের মাযহাব
+    <select id="asr"><option value="hanafi">হানাফি</option><option value="shafi">শাফেয়ী / অন্যান্য</option></select>
+  </label>
+  <p class="note" style="margin-top:6px">প্রতি ওয়াক্তে মিনিট সমন্বয় (GPS বা জেলার সময়ের ওপর, − বা +)</p>
+  <div id="adjRows"></div>
+  <label class="sw" style="margin-top:8px">লেখার সাইজ <span><button class="alt" id="fsM" style="padding:4px 14px">A−</button> <button class="alt" id="fsP" style="padding:4px 14px">A+</button></span></label>
+  <label class="sw">হিজরি তারিখ সমন্বয় <span><button class="alt" id="hM" style="padding:4px 14px">−১</button> <button class="alt" id="hP" style="padding:4px 14px">+১</button></span></label>
+  <div class="btns"><button id="testLock">লক স্ক্রিন টেস্ট করুন (১ মিনিট)</button></div>
+</div>
+
+<h2>📊 নামাজের রিপোর্ট</h2>
+<div class="panel" id="report"></div>
+
+<h2>💾 ব্যাকআপ</h2>
+<div class="panel">
+  <p>সেটিংস, ট্র্যাকার, তাসবিহ সব থাকবে। পাসওয়ার্ড ও অডিও ফাইল থাকবে না।</p>
+  <div class="btns"><button class="alt" id="bkExp">ব্যাকআপ শেয়ার/সেভ</button></div>
+  <textarea id="bkTxt" placeholder="ফিরিয়ে আনতে ব্যাকআপের লেখা এখানে বসান"></textarea>
+  <div class="btns"><button class="alt" id="bkImp">ফিরিয়ে আনুন</button></div>
+</div>
+
+<h2>💚 সদকা / ডোনেশন (ঐচ্ছিক)</h2>
+<div class="panel">
+  <p>গরীব-দুঃখীদের সাহায্যে আপনি ইচ্ছে করলে বিকাশে ডোনেশন করতে পারেন। কমপক্ষে ১০ টাকা, এর বেশি যত খুশি। না করলেও অ্যাপ সম্পূর্ণ ব্যবহার করতে পারবেন।</p>
+  <p class="note" style="margin-top:10px">বিকাশ নম্বর (Send Money)</p>
+  <div class="num" id="bkNum">—</div>
+  <div class="btns"><button class="alt" id="copyNum">নম্বর কপি করুন</button></div>
+  <p class="note" style="margin-top:12px">টাকার পরিমাণ</p>
+  <div class="chips" id="chips"></div>
+  <input type="number" id="amt" min="10" placeholder="অন্য পরিমাণ লিখুন (সর্বনিম্ন ১০ টাকা)" inputmode="numeric">
+  <p class="note">১. বিকাশ অ্যাপে <b>Send Money</b> চাপুন। ২. উপরের নম্বরে টাকা পাঠান। ৩. পাঠানো হলে নিচে স্ক্রিনশট দিন।</p>
+  <hr style="border:0;border-top:1px solid var(--line);margin:14px 0">
+  <p class="note">পাঠানোর পর কনফার্ম করুন</p>
+  <label class="btn alt" style="border:1.5px solid var(--green);background:transparent;color:var(--green);margin-top:6px">📷 স্ক্রিনশট দিন<input type="file" id="shotFile" accept="image/*" hidden></label>
+  <img id="shot" alt="স্ক্রিনশট">
+  <input type="text" id="trx" placeholder="TrxID (ঐচ্ছিক)">
+  <div class="btns"><button id="confirmDon">কনফার্ম করুন</button><button class="alt" id="shareDon">স্ক্রিনশট পাঠান</button></div>
+  <p id="donMsg" class="note" style="margin-top:10px"></p>
 </div>
 
 <h2>লক মোডের নিয়ম</h2>
 <ul class="rules">
-  <li>ওয়াক্ত শুরু হলে আজান বাজবে এবং অ্যাপ ফুলস্ক্রিন লক হবে।</li>
-  <li>লক অবস্থায় যেকোনো নম্বরে কল করা যাবে।</li>
-  <li>নির্ধারিত সময় পর নিজে থেকে আনলক হবে।</li>
-  <li>আজান ও লক কাজ করতে অ্যাপটি ব্রাউজারে খোলা রাখতে হবে।</li>
+  <li>ওয়াক্ত শুরু হলে আজান বাজবে এবং ফোন নিজে থেকে লক হবে, অ্যাপ খোলা না থাকলেও।</li>
+  <li>লকে শুধু ডায়ালপ্যাড খোলে, ফোন করা ও ইনকামিং কল রিসিভ করা যায়।</li>
+  <li>৪ সংখ্যার পাসওয়ার্ড দিলে বা সময় শেষ হলে লক খুলে যায়।</li>
 </ul>
+<h2>🔒 গোপনীয়তা</h2>
+<div class="panel"><p>ক্ষণিক সম্পূর্ণ অফলাইনে চলে। আপনার কোনো তথ্য ফোনের বাইরে যায় না।</p></div>
 
-<div id="lock">
-  <h2>নামাজের ওয়াক্ত চলছে</h2>
-  <p style="opacity:.8">আনলক হতে বাকি</p>
-  <div id="unl">00:00</div>
-  <div id="num"></div>
-  <div class="pad" id="pad"></div>
-  <a class="btn call" id="callBtn" href="tel:">কল দিন</a>
-  <button class="danger" id="emerg" style="margin-top:16px">জরুরি আনলক</button>
 </div>
+<nav id="nav">
+  <button data-t="home" class="on"><span>🕌</span>নামাজ</button>
+  <button data-t="roza"><span>🌙</span>রোজা</button>
+  <button data-t="dua"><span>📖</span>দোয়া</button>
+  <button data-t="tasbih"><span>📿</span>তাসবিহ</button>
+  <button data-t="qibla"><span>🧭</span>কিবলা</button>
+  <button data-t="more"><span>⚙️</span>আরও</button>
+</nav>
+<div id="welcome">
+  <div class="moon">🌙</div>
+  <div class="ar">السلام عليكم ورحمة الله</div>
+  <h1>আসসালামু আলাইকুম</h1>
+  <p>ক্ষণিক-এ স্বাগতম। প্রতি ওয়াক্তে আজান, সঠিক সময়ের হিসাব ও একটু মনোযোগের সুযোগ — আল্লাহ আপনার ইবাদত কবুল করুন।</p>
+  <button id="wBtn">শুরু করি</button>
+</div>
+<div id="greet"></div>
 
 <script>
 const NAMES=["ফজর","জোহর","আসর","মাগরিব","এশা"];
@@ -117,6 +283,11 @@ const store={
   get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 };
+const S=Object.assign({method:"karachi",asr:"hanafi",adj:[0,0,0,0,0],warn:true,fajrAzan:true,fs:100,hadj:0},store.get("S",{}));
+const saveS=()=>store.set("S",S);
+document.documentElement.style.fontSize=S.fs+"%";
+let sunrise=null;
+const NA=window.Android||null;
 let times=store.get("times",DEF.slice());
 let duration=store.get("dur",30);
 let auto=store.get("auto",true);
@@ -131,131 +302,390 @@ function hms(s){s=Math.max(0,s);return bn(pad(Math.floor(s/3600))+":"+pad(Math.f
 function ms(s){s=Math.max(0,s);return bn(pad(Math.floor(s/60))+":"+pad(s%60))}
 function todayKey(){const d=new Date();return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()}
 
-// ---- Audio ----
-function playDefault(){
-  stopAudio();
-  try{
-    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
-    const seq=[392,440,494,523,494,440,392,330,392,440,494,587,523,494,440,392];
-    const t0=actx.currentTime+0.05;
-    seq.forEach((f,i)=>{
-      const o=actx.createOscillator(),g=actx.createGain();
-      o.type="sine";o.frequency.value=f;
-      g.gain.setValueAtTime(0,t0+i*.6);
-      g.gain.linearRampToValueAtTime(.35,t0+i*.6+.05);
-      g.gain.exponentialRampToValueAtTime(.001,t0+i*.6+.58);
-      o.connect(g);g.connect(actx.destination);
-      o.start(t0+i*.6);o.stop(t0+i*.6+.6);
-    });
-  }catch(e){}
-}
-function playAudio(){
-  if(audioData){stopAudio();audioEl=new Audio(audioData);audioEl.play().catch(()=>{})}
-  else playDefault();
-}
-function stopAudio(){
-  if(audioEl){audioEl.pause();audioEl=null}
-  if(actx){try{actx.close()}catch(e){}actx=null}
-}
-$("audioName").textContent=audioData?store.get("audioName","কাস্টম অডিও"):"ডিফল্ট আজান টোন";
-$("file").onchange=e=>{
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=()=>{audioData=r.result;store.set("audio",audioData);store.set("audioName",f.name);$("audioName").textContent=f.name;
-    try{if(localStorage.getItem("audio")===null)alert("ফাইলটি বড়, শুধু এই সেশনে ব্যবহার হবে।")}catch(e){}};
-  r.readAsDataURL(f);
-};
-$("playBtn").onclick=playAudio;
-$("stopBtn").onclick=stopAudio;
-
-// ---- Lock ----
-let wl=null;
-async function startLock(mins){
-  lockEnd=Date.now()+mins*60000;
-  $("lock").classList.add("show");
-  try{await document.documentElement.requestFullscreen()}catch(e){}
-  try{wl=await navigator.wakeLock.request("screen")}catch(e){}
-}
-function endLock(){
-  lockEnd=0;stopAudio();
-  $("lock").classList.remove("show");
-  $("num").textContent="";
-  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
-  if(wl){wl.release().catch(()=>{});wl=null}
-}
-const pad_=$("pad");
-["১","২","৩","৪","৫","৬","৭","৮","৯","*","০","#"].forEach(k=>{
-  const b=document.createElement("button");b.textContent=k;
-  b.onclick=()=>{$("num").textContent+=k;upd()};pad_.appendChild(b)
-});
-const dels=document.createElement("button");dels.textContent="মুছুন";dels.style.fontSize=".9rem";
-dels.onclick=()=>{$("num").textContent=$("num").textContent.slice(0,-1);upd()};pad_.appendChild(dels);
-function upd(){
-  const map={"১":1,"২":2,"৩":3,"৪":4,"৫":5,"৬":6,"৭":7,"৮":8,"৯":9,"০":0};
-  const n=[...$("num").textContent].map(c=>map[c]!==undefined?map[c]:encodeURIComponent(c)).join("");
-  $("callBtn").href="tel:"+n;
-}
-$("emerg").onclick=()=>{if(confirm("জরুরি প্রয়োজনে লক খুলবেন?"))endLock()};
-$("testLock").onclick=()=>{playAudio();startLock(1)};
+function stopAudio(){NA&&NA.stopAzan()}
+function playAudio(){NA&&NA.testAzan("azan")}
 
 // ---- UI ----
 function renderList(nextIdx){
-  $("list").innerHTML=NAMES.map((n,i)=>`<div class="row${i===nextIdx?" on":""}"><span>${n}</span><span>${fmt12(times[i])}</span></div>`).join("");
+  const a=track[keyOf(new Date())]||[0,0,0,0,0];
+  $("list").innerHTML=NAMES.map((n0,i)=>`<div class="row${i===nextIdx?" on":""}"><span>${nm(i)}</span><span>${fmt12(times[i])} <button class="alt ck" data-i="${i}" style="padding:2px 10px;margin-left:8px">${a[i]?"✓":"○"}</button></span></div>`).join("");
 }
 function buildEdit(){
   $("editRows").innerHTML=NAMES.map((n,i)=>`<div><span>${n}</span><input type="time" id="t${i}" value="${times[i]}"></div>`).join("");
 }
 $("editBtn").onclick=()=>{buildEdit();$("edit").classList.toggle("show")};
 $("saveBtn").onclick=()=>{
-  times=NAMES.map((_,i)=>$("t"+i).value||DEF[i]);store.set("times",times);
+  times=NAMES.map((_,i)=>$("t"+i).value||DEF[i]);store.set("times",times);mode="manual";sunrise=null;store.set("mode",mode);showLoc();
   $("edit").classList.remove("show");tick(true);
 };
-$("resetBtn").onclick=()=>{times=DEF.slice();store.set("times",times);buildEdit();tick(true)};
+$("resetBtn").onclick=()=>{times=DEF.slice();store.set("times",times);mode="manual";sunrise=null;store.set("mode",mode);showLoc();buildEdit();tick(true)};
 $("dur").value=String(duration);
 $("dur").onchange=e=>{duration=+e.target.value;store.set("dur",duration)};
 $("autoLock").checked=auto;
 $("autoLock").onchange=e=>{auto=e.target.checked;store.set("auto",auto)};
 
-if("Notification" in window&&Notification.permission==="default"){
-  document.addEventListener("click",()=>Notification.requestPermission(),{once:true});
+
+
+// ---- Prayer time calculation (University of Islamic Sciences, Karachi; Hanafi Asr) ----
+const PT={r:Math.PI/180,
+ sin(d){return Math.sin(d*this.r)},cos(d){return Math.cos(d*this.r)},tan(d){return Math.tan(d*this.r)},
+ asin(x){return Math.asin(x)/this.r},acos(x){return Math.acos(x)/this.r},
+ atan2(y,x){return Math.atan2(y,x)/this.r},acot(x){return Math.atan(1/x)/this.r},
+ fa(a){return a-360*Math.floor(a/360)},fh(h){return h-24*Math.floor(h/24)}};
+function julianDay(y,m,d){if(m<=2){y-=1;m+=12}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+ return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5}
+function sunPos(jd){const D=jd-2451545.0,g=PT.fa(357.529+0.98560028*D),q=PT.fa(280.459+0.98564736*D),
+ L=PT.fa(q+1.915*PT.sin(g)+0.020*PT.sin(2*g)),e=23.439-0.00000036*D,
+ RA=PT.fh(PT.atan2(PT.cos(e)*PT.sin(L),PT.cos(L))/15);let eqt=q/15-RA;
+ if(eqt>12)eqt-=24;if(eqt<-12)eqt+=24;return{decl:PT.asin(PT.sin(e)*PT.sin(L)),eqt}}
+const METHODS={karachi:[18,18,0],mwl:[18,17,0],isna:[15,15,0],egypt:[19.5,17.5,0],umm:[18.5,0,90]};
+function calcPrayer(lat,lng,date,tz){
+ const m=METHODS[S.method]||METHODS.karachi,af=S.asr==="shafi"?1:2;
+ const jd=julianDay(date.getFullYear(),date.getMonth()+1,date.getDate())-lng/360;
+ const mid=t=>PT.fh(12-sunPos(jd+t/24).eqt);
+ const T=(ang,t)=>{const dc=sunPos(jd+t/24).decl;
+  const n=-PT.sin(ang)-PT.sin(dc)*PT.sin(lat),d=PT.cos(dc)*PT.cos(lat);return PT.acos(n/d)/15};
+ const adj=tz-lng/15;
+ const dc13=sunPos(jd+13/24).decl;
+ const asrAng=-PT.acot(af+PT.tan(Math.abs(lat-dc13)));
+ const mg=mid(18)+T(0.833,18);
+ const raw=[mid(5)-T(m[0],5),mid(12),mid(13)+T(asrAng,13),mg,m[2]?mg+m[2]/60:mid(18)+T(m[1],18)];
+ const sr=mid(6)-T(0.833,6);
+ const conv=(h,add)=>{if(!isFinite(h))return null;h=PT.fh(h+adj+0.5/60);
+  let mins=Math.floor(h)*60+Math.floor((h%1)*60)+add;mins=((mins%1440)+1440)%1440;
+  return String(Math.floor(mins/60)).padStart(2,"0")+":"+String(mins%60).padStart(2,"0")};
+ const out=raw.map((h,i)=>conv(h,S.adj[i]||0));
+ out.sr=conv(sr,0);
+ return out;
 }
+
+let mode=store.get("mode","manual"),loc=store.get("loc",null),calcDay=null;
+function showLoc(){
+  $("locInfo").textContent=(mode==="gps"&&loc)?"📍 "+(loc.district?loc.district+" জেলা":"GPS: "+bn(loc.lat.toFixed(3))+", "+bn(loc.lng.toFixed(3)))+" — প্রতিদিন নিজে থেকে হিসাব হয়। আনুমানিক ১-৩ মিনিট পার্থক্য হতে পারে, দরকারে সময় এডিট করুন।":"সময় ডিফল্ট বা হাতে দেওয়া। সঠিক সময়ের জন্য GPS ব্যবহার করুন।";
+}
+function applyGps(){
+  if(!loc)return false;
+  const r=calcPrayer(loc.lat,loc.lng,new Date(),-new Date().getTimezoneOffset()/60);
+  if(r.some(x=>!x))return false;
+  times=r.slice();sunrise=r.sr;store.set("times",times);calcDay=todayKey();return true;
+}
+$("gpsBtn").onclick=()=>{
+  if(!navigator.geolocation){alert("এই ব্রাউজারে GPS সাপোর্ট নেই।");return}
+  $("gpsBtn").textContent="লোকেশন খোঁজা হচ্ছে...";
+  navigator.geolocation.getCurrentPosition(pos=>{
+    loc={lat:pos.coords.latitude,lng:pos.coords.longitude};
+    if(applyGps()){mode="gps";store.set("loc",loc);store.set("mode",mode);showLoc();tick(true)}
+    else alert("এই লোকেশনের জন্য সময় হিসাব করা যায়নি। হাতে সময় দিন।");
+    $("gpsBtn").textContent="📍 GPS দিয়ে সময় নিন";
+  },()=>{
+    alert("লোকেশন পাওয়া যায়নি। ফোনের GPS ও ব্রাউজারের লোকেশন অনুমতি চালু করুন।");
+    $("gpsBtn").textContent="📍 GPS দিয়ে সময় নিন";
+  },{enableHighAccuracy:false,timeout:20000,maximumAge:3600000});
+};
+if(mode==="gps"&&loc)applyGps();
+showLoc();
+
+// ---- Donation ----
+const BKASH="01814113387"; // <-- এখানে আপনার বিকাশ নম্বর বসান
+let chosen=0,shotFileObj=null;
+$("bkNum").textContent=/^01\d{9}$/.test(BKASH)?bn(BKASH):"(নম্বর এখনো সেট করা হয়নি)";
+$("copyNum").onclick=()=>{
+  if(!/^01\d{9}$/.test(BKASH)){alert("নম্বর এখনো সেট করা হয়নি।");return}
+  (navigator.clipboard?navigator.clipboard.writeText(BKASH):Promise.reject()).then(()=>{$("copyNum").textContent="কপি হয়েছে ✓";setTimeout(()=>$("copyNum").textContent="নম্বর কপি করুন",1500)}).catch(()=>alert("নম্বর: "+BKASH));
+};
+[10,20,50,100,500].forEach(v=>{
+  const b=document.createElement("button");b.className="chip";b.textContent="৳"+bn(v);
+  b.onclick=()=>{chosen=v;$("amt").value=v;sync()};$("chips").appendChild(b);
+});
+function sync(){[...$("chips").children].forEach(b=>b.classList.toggle("on",b.textContent==="৳"+bn(+$("amt").value)))}
+$("amt").oninput=()=>{chosen=+$("amt").value;sync()};
+$("shotFile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;shotFileObj=f;
+  $("shot").src=URL.createObjectURL(f);$("shot").style.display="block";
+};
+function donTotal(){const l=store.get("donations",[]);return{n:l.length,sum:l.reduce((a,b)=>a+b.amount,0)}}
+function donMsg(){const t=donTotal();if(t.n)$("donMsg").innerHTML='<span class="ok">আপনার মোট ডোনেশন: ৳'+bn(t.sum)+' ('+bn(t.n)+' বার)।</span> আল্লাহ কবুল করুন।'}
+donMsg();
+$("confirmDon").onclick=()=>{
+  const a=+$("amt").value;
+  if(!a||a<10){alert("কমপক্ষে ১০ টাকা লিখুন।");return}
+  if(!shotFileObj){alert("আগে পাঠানোর স্ক্রিনশট দিন।");return}
+  const l=store.get("donations",[]);
+  l.push({amount:Math.floor(a),trx:$("trx").value.trim(),date:new Date().toISOString()});
+  store.set("donations",l);
+  $("donMsg").innerHTML='<span class="ok">ধন্যবাদ! ৳'+bn(Math.floor(a))+' ডোনেশন নথিভুক্ত হয়েছে।</span> জাযাকাল্লাহু খাইরান।';
+  setTimeout(donMsg,6000);
+};
+$("shareDon").onclick=async()=>{
+  if(!shotFileObj){alert("আগে স্ক্রিনশট দিন।");return}
+  const text="ডোনেশন কনফার্মেশন: ৳"+(+$("amt").value||"?")+($("trx").value?" | TrxID: "+$("trx").value:"");
+  try{
+    if(navigator.canShare&&navigator.canShare({files:[shotFileObj]})){await navigator.share({files:[shotFileObj],text});return}
+  }catch(e){return}
+  alert("এই ফোনে সরাসরি শেয়ার সম্ভব না। স্ক্রিনশটটি নিজে অ্যাডমিনকে পাঠান।");
+};
+
+// ---- Tabs ----
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.id==="tab-"+b.dataset.t));
+  document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("on",x===b));
+  window.scrollTo(0,0);
+});
+
+// ---- Roza ----
+function updRoza(now){
+  const f=secOf(times[0]),m=secOf(times[3]);
+  $("sehri").textContent=fmt12(times[0]);$("iftar").textContent=fmt12(times[3]);
+  let lbl,diff;
+  if(now<f){lbl="সেহরি শেষ হতে বাকি";diff=f-now}
+  else if(now<m){lbl="ইফতার হতে বাকি";diff=m-now}
+  else{lbl="পরবর্তী সেহরি শেষ হতে বাকি";diff=f+86400-now}
+  $("rozaLbl").textContent=lbl;$("rozaCount").textContent=hms(diff);
+}
+
+// ---- Dua & Ayah ----
+const DUAS=[
+{k:"আয়াত",ar:"فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا",bn:"নিশ্চয়ই কষ্টের সাথেই স্বস্তি আছে। নিশ্চয়ই কষ্টের সাথেই স্বস্তি আছে।",s:"সূরা ইনশিরাহ ৯৪:৫-৬"},
+{k:"আয়াত",ar:"وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",bn:"যে আল্লাহর উপর ভরসা করে, তিনিই তার জন্য যথেষ্ট।",s:"সূরা তালাক ৬৫:৩"},
+{k:"আয়াত",ar:"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",bn:"জেনে রাখো, আল্লাহর স্মরণেই অন্তর প্রশান্ত হয়।",s:"সূরা রা'দ ১৩:২৮"},
+{k:"আয়াত",ar:"فَاذْكُرُونِي أَذْكُرْكُمْ",bn:"তোমরা আমাকে স্মরণ করো, আমিও তোমাদের স্মরণ করব।",s:"সূরা বাকারা ২:১৫২"},
+{k:"আয়াত",ar:"لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا",bn:"আল্লাহ কাউকে তার সাধ্যের অতিরিক্ত দায়িত্ব দেন না।",s:"সূরা বাকারা ২:২৮৬"},
+{k:"আয়াত",ar:"إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",bn:"নিশ্চয়ই আল্লাহ ধৈর্যশীলদের সাথে আছেন।",s:"সূরা বাকারা ২:১৫৩"},
+{k:"আয়াত",ar:"وَقُل رَّبِّ زِدْنِي عِلْمًا",bn:"বলো, হে আমার রব, আমার জ্ঞান বাড়িয়ে দিন।",s:"সূরা ত্বা-হা ২০:১১৪"},
+{k:"দোয়া",ar:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",bn:"হে আমাদের রব, আমাদের দুনিয়াতে কল্যাণ দিন, আখিরাতেও কল্যাণ দিন এবং আমাদের জাহান্নামের আযাব থেকে রক্ষা করুন।",s:"সূরা বাকারা ২:২০১"},
+{k:"দোয়া",ar:"رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي",bn:"হে আমার রব, আমার বক্ষ প্রশস্ত করে দিন এবং আমার কাজ সহজ করে দিন।",s:"সূরা ত্বা-হা ২০:২৫-২৬"},
+{k:"দোয়া",ar:"حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",bn:"আল্লাহই আমাদের জন্য যথেষ্ট, আর তিনি কতই না উত্তম কর্মবিধায়ক।",s:"সূরা আলে ইমরান ৩:১৭৩"},
+{k:"দোয়া",ar:"رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",bn:"হে আমার রব, তাঁদের (পিতা-মাতার) প্রতি দয়া করুন, যেমন তাঁরা শৈশবে আমাকে লালন-পালন করেছেন।",s:"সূরা বনী ইসরাঈল ১৭:২৪"},
+{k:"দোয়া",ar:"لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ",bn:"আপনি ছাড়া কোনো ইলাহ নেই, আপনি পবিত্র; নিশ্চয়ই আমি যালিমদের অন্তর্ভুক্ত ছিলাম।",s:"সূরা আম্বিয়া ২১:৮৭"},
+{k:"দোয়া",ar:"رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ",bn:"হে আমাদের রব, আমরা নিজেদের উপর যুলুম করেছি; আপনি ক্ষমা না করলে ও দয়া না করলে আমরা ক্ষতিগ্রস্তদের অন্তর্ভুক্ত হব।",s:"সূরা আ'রাফ ৭:২৩"},
+{k:"দোয়া",ar:"اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",bn:"হে আল্লাহ, আপনি ক্ষমাশীল, ক্ষমা করতে ভালোবাসেন; অতএব আমাকে ক্ষমা করুন।",s:"তিরমিযী"}
+];
+let di=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000)%DUAS.length;
+function showDua(){const d=DUAS[di];$("duaKind").textContent=d.k;$("duaAr").textContent=d.ar;$("duaBn").textContent=d.bn;$("duaSrc").textContent=d.s}
+$("duaPrev").onclick=()=>{di=(di+DUAS.length-1)%DUAS.length;showDua()};
+$("duaNext").onclick=()=>{di=(di+1)%DUAS.length;showDua()};
+$("duaCopy").onclick=()=>{const d=DUAS[di];const t=d.ar+"\n"+d.bn+"\n("+d.s+")";
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{$("duaCopy").textContent="কপি হয়েছে ✓";setTimeout(()=>$("duaCopy").textContent="কপি",1500)}).catch(()=>{})};
+showDua();
+
+// ---- Tasbih ----
+const DHIKR=["সুবহানাল্লাহ","আলহামদুলিল্লাহ","আল্লাহু আকবার","লা ইলাহা ইল্লাল্লাহ"];
+let tas=store.get("tas",{n:0,d:0,t:33});
+function drawTas(){
+  $("tas").textContent=bn(tas.n);$("tasTarget").value=String(tas.t);
+  [...$("dhikrChips").children].forEach((b,i)=>b.classList.toggle("on",i===tas.d));
+  $("tasInfo").textContent=DHIKR[tas.d]+(tas.t?" — "+bn(tas.n)+" / "+bn(tas.t):" — মোট "+bn(tas.n));
+}
+DHIKR.forEach((n,i)=>{const b=document.createElement("button");b.className="chip";b.textContent=n;b.onclick=()=>{tas.d=i;tas.n=0;store.set("tas",tas);drawTas()};$("dhikrChips").appendChild(b)});
+$("tas").onclick=()=>{
+  tas.n++;store.set("tas",tas);drawTas();
+  try{navigator.vibrate&&navigator.vibrate(tas.t&&tas.n%tas.t===0?[200,80,200]:15)}catch(e){}
+  if(tas.t&&tas.n%tas.t===0)$("tasInfo").textContent="মাশাআল্লাহ! "+bn(tas.t)+" পূর্ণ হয়েছে";
+};
+$("tasTarget").onchange=e=>{tas.t=+e.target.value;store.set("tas",tas);drawTas()};
+$("tasReset").onclick=()=>{tas.n=0;store.set("tas",tas);drawTas()};
+drawTas();
+
+// ---- Qibla ----
+function qiblaBearing(lat,lng){const r=Math.PI/180,p1=lat*r,p2=21.4225*r,dl=(39.8262-lng)*r;
+  const y=Math.sin(dl)*Math.cos(p2),x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);
+  return (Math.atan2(y,x)/r+360)%360}
+function distKm(lat,lng){const r=Math.PI/180,a=Math.sin((21.4225-lat)*r/2)**2+Math.cos(lat*r)*Math.cos(21.4225*r)*Math.sin((39.8262-lng)*r/2)**2;return 6371*2*Math.asin(Math.sqrt(a))}
+let qb=null,heading=null;
+function drawQ(){
+  if(!loc){$("qInfo").textContent="কিবলা জানতে নামাজ ট্যাবে গিয়ে আগে GPS দিয়ে লোকেশন নিন, অথবা নিচের বোতাম চাপুন।";return}
+  qb=qiblaBearing(loc.lat,loc.lng);
+  $("qArrow").setAttribute("transform","rotate("+qb+")");
+  $("rose").setAttribute("transform","rotate("+(heading==null?0:-heading)+")");
+  let t="কিবলা: উত্তর থেকে "+bn(Math.round(qb))+"° (ঘড়ির কাঁটার দিকে) • মক্কা "+bn(Math.round(distKm(loc.lat,loc.lng)))+" কিমি";
+  if(heading!=null){const d=Math.abs(((qb-heading+540)%360)-180);t=(d<5?"✅ আপনি কিবলামুখী":"ফোন ঘুরিয়ে 🕋 উপরে আনুন")}
+  $("qInfo").textContent=t;
+}
+function onOri(e){
+  let h=null;
+  if(e.webkitCompassHeading!=null)h=e.webkitCompassHeading;
+  else if((e.absolute||e.type==="deviceorientationabsolute")&&e.alpha!=null)h=360-e.alpha;
+  if(h==null)return;heading=(h+360)%360;drawQ();
+}
+function listenOri(){window.addEventListener("deviceorientationabsolute",onOri,true);window.addEventListener("deviceorientation",onOri,true)}
+$("qStart").onclick=()=>{
+  const go=()=>{
+    if(typeof DeviceOrientationEvent!=="undefined"&&DeviceOrientationEvent.requestPermission)DeviceOrientationEvent.requestPermission().then(r=>{if(r==="granted")listenOri()}).catch(()=>{});
+    else listenOri();
+    setTimeout(()=>{if(heading==null)$("qInfo").textContent+=" (কম্পাস সেন্সর পাওয়া যায়নি, উপরের কোণ মেনে দিক ঠিক করুন)"},2500);
+  };
+  if(loc){drawQ();go();return}
+  if(!navigator.geolocation){alert("এই ব্রাউজারে GPS সাপোর্ট নেই।");return}
+  navigator.geolocation.getCurrentPosition(pos=>{loc={lat:pos.coords.latitude,lng:pos.coords.longitude};store.set("loc",loc);drawQ();go()},()=>alert("লোকেশন পাওয়া যায়নি। GPS ও অনুমতি চালু করুন।"),{timeout:20000,maximumAge:3600000});
+};
+drawQ();
+
+// ---- Welcome / Salam ----
+function dayGreeting(){const h=new Date().getHours();return h<12?"সুপ্রভাত":h<17?"শুভ দুপুর":h<20?"শুভ সন্ধ্যা":"শুভ রাত্রি"}
+function toast(t){const g=$("greet");g.textContent=t;g.classList.add("show");setTimeout(()=>g.classList.remove("show"),4500)}
+function openWelcome(){const w=$("welcome");w.classList.add("show");requestAnimationFrame(()=>requestAnimationFrame(()=>w.classList.add("in")))}
+$("wBtn").onclick=()=>{
+  const w=$("welcome");w.classList.remove("in");setTimeout(()=>w.classList.remove("show"),600);
+  store.set("welcomed",true);store.set("lastGreet",todayKey());
+  const nb=document.querySelector('#nav button[data-t="more"]');if(nb)nb.click();
+  setTimeout(()=>{const e=$("setup");if(e)e.scrollIntoView()},300);
+};
+if(!store.get("welcomed",false))openWelcome();
+else if(store.get("lastGreet","")!==todayKey()){store.set("lastGreet",todayKey());setTimeout(()=>toast("আসসালামু আলাইকুম, "+dayGreeting()+" 🌙"),600)}
 
 let lastIdx=-2;
 function tick(force){
+  if(mode==="gps"&&loc&&calcDay!==todayKey()){if(applyGps())force=true}
   const d=new Date();
   const now=d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
   $("clock").textContent=hms(now);
 
   let idx=times.findIndex(t=>secOf(t)>now),diff;
   if(idx===-1){idx=0;diff=secOf(times[0])+86400-now}else diff=secOf(times[idx])-now;
-  $("nname").textContent=NAMES[idx];
-  $("count").textContent=hms(diff);
+  $("nname").textContent=nm(idx);
+  $("count").textContent=hms(diff);updRoza(now);
   if(idx!==lastIdx||force){renderList(idx);lastIdx=idx}
 
-  // trigger
-  const k=todayKey();
-  if(fired.day!==k)fired={day:k};
-  times.forEach((t,i)=>{
-    const s=secOf(t);
-    if(now>=s&&now<s+5&&!fired[i]){
-      fired[i]=true;store.set("fired",fired);
-      playAudio();
-      try{if(Notification.permission==="granted")new Notification("ক্ষণিক",{body:NAMES[i]+" ওয়াক্ত শুরু হয়েছে"})}catch(e){}
-      if(auto)startLock(duration);
-    }
-  });
-
-  if(lockEnd){
-    const left=Math.ceil((lockEnd-Date.now())/1000);
-    $("unl").textContent=ms(left);
-    if(left<=0)endLock();
-  }
+  const cj=JSON.stringify(cfgObj());
+  if(cj!==lastCfg){lastCfg=cj;NA&&NA.saveConfig(cj)}
+  updWaqt(now);updHijri();updSun();
 }
-let dip=null;
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e;$("installBtn").style.display="block"});
-$("installBtn").onclick=async()=>{if(!dip)return;dip.prompt();await dip.userChoice;dip=null;$("installBtn").style.display="none"};
-window.addEventListener("appinstalled",()=>{$("installBtn").style.display="none"});
-if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+// ---- Native sync, waqt end, hijri, sun panel ----
+let lastCfg="";
+function cfgObj(){return{mode,lat:loc?loc.lat:undefined,lng:loc?loc.lng:undefined,method:S.method,asr:S.asr,times,adj:S.adj,auto,dur:duration,warn:S.warn,fajrAzan:S.fajrAzan}}
+function nm(i,d){d=d||new Date();return i===1&&d.getDay()===5?"জুমা":NAMES[i]}
+function updWaqt(now){
+  const el=$("waqtEnd");let c=-1;
+  times.forEach((t,i)=>{if(secOf(t)<=now)c=i});
+  let end=null;
+  if(c===-1){c=4;end=secOf(times[0])}
+  else if(c===0)end=sunrise?secOf(sunrise):null;
+  else if(c<4)end=secOf(times[c+1]);
+  else end=secOf(times[0])+86400;
+  el.textContent=end?nm(c)+" ওয়াক্ত শেষ হতে বাকি "+hms(end-now):"";
+}
+let hijKey="";
+function updHijri(){
+  const k=todayKey()+"|"+S.hadj;if(k===hijKey)return;hijKey=k;
+  let t="";
+  try{t=new Intl.DateTimeFormat("bn-BD-u-ca-islamic-umalqura",{day:"numeric",month:"long",year:"numeric"}).format(new Date(Date.now()+S.hadj*864e5))}catch(e){}
+  $("hijri").textContent=t;
+}
+let sunHtml="";
+function updSun(){
+  const add=(t,m)=>{const s=((secOf(t)+m*60)%86400+86400)%86400;return fmt12(pad(Math.floor(s/3600))+":"+pad(Math.floor(s%3600/60)))};
+  let h="<p>"+(sunrise?"🌅 সূর্যোদয়: <b>"+fmt12(sunrise)+"</b>":"🌅 সূর্যোদয় দেখতে GPS বা জেলা বেছে নিন")+"</p><p style='margin-top:6px'>⛔ নামাজ পড়া নিষিদ্ধ সময় (আনুমানিক):</p><ul class='rules'>";
+  if(sunrise)h+="<li>সূর্যোদয় থেকে প্রায় ১৫ মিনিট ("+fmt12(sunrise)+" – "+add(sunrise,15)+")</li>";
+  h+="<li>ঠিক দুপুর ("+add(times[1],-6)+" – "+fmt12(times[1])+")</li><li>সূর্যাস্তের প্রায় ১৫ মিনিট আগে থেকে ("+add(times[3],-15)+" – "+fmt12(times[3])+")</li></ul>";
+  if(h!==sunHtml){sunHtml=h;$("sunPanel").innerHTML=h}
+}
+
+// ---- Districts (offline) ----
+const DIST=[["ঢাকা",23.81,90.41],["গাজীপুর",24.00,90.42],["নারায়ণগঞ্জ",23.62,90.50],["নরসিংদী",23.92,90.72],["মানিকগঞ্জ",23.86,90.00],["মুন্সিগঞ্জ",23.55,90.53],["কিশোরগঞ্জ",24.43,90.78],["টাঙ্গাইল",24.25,89.92],["ফরিদপুর",23.61,89.84],["রাজবাড়ী",23.76,89.64],["গোপালগঞ্জ",23.01,89.83],["মাদারীপুর",23.17,90.20],["শরীয়তপুর",23.22,90.35],
+["চট্টগ্রাম",22.36,91.78],["কক্সবাজার",21.43,92.01],["কুমিল্লা",23.46,91.18],["ব্রাহ্মণবাড়িয়া",23.96,91.11],["চাঁদপুর",23.23,90.67],["লক্ষ্মীপুর",22.94,90.84],["নোয়াখালী",22.87,91.10],["ফেনী",23.02,91.40],["খাগড়াছড়ি",23.12,91.98],["রাঙামাটি",22.65,92.18],["বান্দরবান",22.19,92.22],
+["সিলেট",24.90,91.87],["মৌলভীবাজার",24.48,91.77],["হবিগঞ্জ",24.38,91.42],["সুনামগঞ্জ",25.07,91.40],
+["রাজশাহী",24.37,88.60],["নাটোর",24.41,88.99],["নওগাঁ",24.80,88.93],["চাঁপাইনবাবগঞ্জ",24.60,88.28],["পাবনা",24.00,89.23],["সিরাজগঞ্জ",24.45,89.70],["বগুড়া",24.85,89.37],["জয়পুরহাট",25.10,89.02],
+["খুলনা",22.82,89.55],["বাগেরহাট",22.65,89.79],["সাতক্ষীরা",22.72,89.07],["যশোর",23.17,89.21],["ঝিনাইদহ",23.54,89.17],["মাগুরা",23.49,89.42],["নড়াইল",23.17,89.50],["কুষ্টিয়া",23.90,89.12],["চুয়াডাঙ্গা",23.64,88.85],["মেহেরপুর",23.76,88.63],
+["বরিশাল",22.70,90.37],["ভোলা",22.69,90.65],["পটুয়াখালী",22.36,90.33],["পিরোজপুর",22.58,89.97],["ঝালকাঠি",22.64,90.20],["বরগুনা",22.15,90.13],
+["রংপুর",25.74,89.25],["দিনাজপুর",25.63,88.64],["গাইবান্ধা",25.33,89.53],["কুড়িগ্রাম",25.81,89.64],["লালমনিরহাট",25.99,89.45],["নীলফামারী",25.93,88.86],["পঞ্চগড়",26.34,88.55],["ঠাকুরগাঁও",26.03,88.46],
+["ময়মনসিংহ",24.75,90.41],["জামালপুর",24.92,89.94],["শেরপুর",25.02,90.02],["নেত্রকোনা",24.87,90.73]];
+DIST.forEach((d,i)=>{const o=document.createElement("option");o.value=i;o.textContent=d[0];$("dist").appendChild(o)});
+$("dist").onchange=e=>{
+  if(e.target.value==="")return;
+  const d=DIST[+e.target.value];loc={lat:d[1],lng:d[2],district:d[0]};
+  if(applyGps()){mode="gps";store.set("loc",loc);store.set("mode",mode);showLoc();tick(true)}
+};
+
+// ---- Prayer tracker, qaza, report ----
+const keyOf=d=>d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
+let track=store.get("track",{});
+if(!store.get("trackStart",null))store.set("trackStart",keyOf(new Date()));
+const dayDone=d=>{const a=track[keyOf(d)];return a?a.filter(Boolean).length:0};
+function parseKey(k){const p=k.split("-").map(Number);return new Date(p[0],p[1],p[2])}
+$("list").onclick=e=>{
+  const b=e.target.closest("button[data-i]");if(!b)return;
+  const k=keyOf(new Date());const a=track[k]||[0,0,0,0,0];
+  a[+b.dataset.i]=a[+b.dataset.i]?0:1;track[k]=a;store.set("track",track);
+  renderList(lastIdx);renderReport();
+};
+function renderReport(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const wk=["রবি","সোম","মঙ্গল","বুধ","বৃহস্পতি","শুক্র","শনি"];
+  let bars="";
+  for(let i=6;i>=0;i--){
+    const d=new Date(today);d.setDate(d.getDate()-i);const n=dayDone(d);
+    bars+=`<div style="flex:1;text-align:center"><div style="height:60px;display:flex;align-items:flex-end"><div style="width:70%;margin:0 auto;height:${n*20}%;min-height:2px;background:var(--green);border-radius:4px"></div></div><div style="font-size:.7rem">${wk[d.getDay()]}</div><div style="font-size:.7rem">${bn(n)}</div></div>`;
+  }
+  let streak=0;const sd=new Date(today);if(dayDone(sd)<5)sd.setDate(sd.getDate()-1);
+  while(dayDone(sd)===5){streak++;sd.setDate(sd.getDate()-1)}
+  const st=parseKey(store.get("trackStart",keyOf(today)));
+  let missed=0;
+  for(const c=new Date(st);c<today;c.setDate(c.getDate()+1))missed+=5-dayDone(c);
+  const q=Math.max(0,missed-store.get("qazaPaid",0));
+  let md=0,mt=0;
+  for(let i=0;i<30;i++){const d=new Date(today);d.setDate(d.getDate()-i);if(d<st)break;md+=dayDone(d);mt+=5}
+  $("report").innerHTML=`<div style="display:flex;gap:4px">${bars}</div><p style="margin-top:10px">🔥 টানা পূর্ণ দিন: <b>${bn(streak)}</b></p><p>গত ৩০ দিনে: <b>${bn(md)}</b> / ${bn(mt)} ওয়াক্ত</p><p>কাজা বাকি: <b>${bn(q)}</b> ওয়াক্ত</p><div class="btns"><button class="alt" id="qPaid">একটি কাজা আদায় হয়েছে</button></div><p class="note">ওয়াক্তের পাশের ○ চাপ দিয়ে ✓ করুন। আগের দিনের না-করা ওয়াক্ত কাজা হিসেবে গণনা হয়।</p>`;
+  $("qPaid").onclick=()=>{store.set("qazaPaid",store.get("qazaPaid",0)+1);renderReport()};
+}
+
+// ---- Settings page wiring ----
+const recalc=()=>{if(mode==="gps"&&loc){applyGps();showLoc();tick(true)}};
+$("warn").checked=S.warn;$("warn").onchange=e=>{S.warn=e.target.checked;saveS()};
+$("fajrAzan").checked=S.fajrAzan;$("fajrAzan").onchange=e=>{S.fajrAzan=e.target.checked;saveS()};
+$("method").value=S.method;$("method").onchange=e=>{S.method=e.target.value;saveS();recalc()};
+$("asr").value=S.asr;$("asr").onchange=e=>{S.asr=e.target.value;saveS();recalc()};
+$("adjRows").innerHTML=NAMES.map((n,i)=>`<label class="sw"><span>${n}</span><input type="number" min="-30" max="30" value="${S.adj[i]||0}" data-adj="${i}"></label>`).join("");
+$("adjRows").querySelectorAll("[data-adj]").forEach(inp=>inp.onchange=()=>{S.adj[+inp.dataset.adj]=Math.max(-30,Math.min(30,+inp.value||0));saveS();recalc()});
+$("fsM").onclick=()=>{S.fs=Math.max(80,S.fs-10);saveS();document.documentElement.style.fontSize=S.fs+"%"};
+$("fsP").onclick=()=>{S.fs=Math.min(140,S.fs+10);saveS();document.documentElement.style.fontSize=S.fs+"%"};
+$("hM").onclick=()=>{S.hadj=Math.max(-2,S.hadj-1);saveS();hijKey=""};
+$("hP").onclick=()=>{S.hadj=Math.min(2,S.hadj+1);saveS();hijKey=""};
+$("testLock").onclick=()=>{if(!NA)return;if(!NA.testLock())alert("আগে সেটআপ অংশে 'অন্য অ্যাপের ওপর দেখানো' অনুমতি দিন।")};
+$("stopBtn").onclick=stopAudio;
+document.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
+  if(!NA)return;const k=b.dataset.k,a=b.dataset.a;
+  if(a==="pick")NA.pickAudio(k);if(a==="play")NA.testAzan(k);if(a==="clr"){NA.clearAudio(k);refreshAudio()}
+});
+function refreshAudio(){
+  if(!NA)return;const s=JSON.parse(NA.status());
+  $("azanName").textContent=s.azanName||"ডিফল্ট আজান টোন (আসল আজানের ফাইল দিন)";
+  $("fajrName").textContent=s.fajrName||"ফজরের আলাদা আজান: নেই (সাধারণ আজান বাজবে)";
+}
+window.onAudioPicked=()=>refreshAudio();
+$("pinSet").onclick=()=>{
+  if(!NA){alert("এটি অ্যান্ড্রয়েড অ্যাপে কাজ করবে।");return}
+  const v=$("pin").value.replace(/[০-৯]/g,c=>"০১২৩৪৫৬৭৮৯".indexOf(c));
+  if(!/^\d{4}$/.test(v)){alert("ঠিক ৪টি সংখ্যা দিন।");return}
+  if(NA.setPin(v)){$("pin").value="";alert("পাসওয়ার্ড সেট হয়েছে।");renderSetup()}
+};
+const SETUP=[
+ {k:"overlay",t:"অন্য অ্যাপের ওপর দেখানো (লকের জন্য জরুরি)"},
+ {k:"notif",t:"নোটিফিকেশন"},
+ {k:"exact",t:"সঠিক সময়ে অ্যালার্ম"},
+ {k:"battery",t:"ব্যাটারি অপ্টিমাইজেশন বন্ধ (Infinix-এ জরুরি)"},
+ {k:"phone",t:"ফোন কল ও কল অবস্থা (লকে কল করার জন্য)"},
+ {k:"location",t:"লোকেশন (GPS)"},
+ {k:"autostart",t:"অটো-স্টার্ট চালু করুন (Infinix-এ জরুরি)"}];
+function renderSetup(){
+  if(!NA){$("setupRows").innerHTML="<p>এই অংশ অ্যান্ড্রয়েড অ্যাপে কাজ করবে।</p>";return}
+  const s=JSON.parse(NA.status());
+  $("setupRows").innerHTML=SETUP.map(x=>{const has=x.k in s;const ok=has&&s[x.k];
+    return `<label class="sw"><span>${has?(ok?"✅ ":"⚠️ "):"➡️ "}${x.t}</span>${ok?"":`<button class="alt" data-p="${x.k}" style="padding:6px 12px">চালু করুন</button>`}</label>`}).join("");
+  $("setupRows").querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>NA.request(b.dataset.p));
+  $("pinInfo").textContent=NA.hasPin()?"✅ পাসওয়ার্ড সেট আছে":"⚠️ পাসওয়ার্ড এখনো সেট করা হয়নি";
+}
+window.onNativeResume=()=>{renderSetup();refreshAudio()};
+$("bkExp").onclick=()=>{
+  const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);o[k]=localStorage.getItem(k)}
+  const t=JSON.stringify({app:"kshonik",v:1,data:o});
+  if(NA)NA.share("ক্ষণিক ব্যাকআপ",t);else prompt("কপি করুন",t);
+};
+$("bkImp").onclick=()=>{
+  try{const o=JSON.parse($("bkTxt").value);if(o.app!=="kshonik")throw 0;
+    Object.keys(o.data).forEach(k=>localStorage.setItem(k,o.data[k]));alert("ফিরিয়ে আনা হয়েছে");location.reload()}
+  catch(e){alert("ব্যাকআপের লেখাটি ঠিক নয়।")}
+};
+renderSetup();refreshAudio();renderReport();
 renderList(0);tick(true);
 setInterval(tick,1000);
 </script>

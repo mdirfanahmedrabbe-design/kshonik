@@ -1,0 +1,11 @@
+<resources>
+    <style name="Theme.Kshonik" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/ic_bg</item>
+        <item name="android:statusBarColor">@color/ic_bg</item>
+    </style>
+    <style name="Theme.Lock" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/lock_bg</item>
+        <item name="android:statusBarColor">@color/lock_bg</item>
+        <item name="android:navigationBarColor">@color/lock_bg</item>
+    </style>
+</resources>
